@@ -2,7 +2,7 @@ import {deleteCard, putCardLike, deleteCardLike} from "./api.js";
 import {closeModal, openModal} from "./modal.js";
 
 function createCard(card, userId) {
-    const {name, link, likes, _id, owner} = card;
+    const {name, link, likes, _id} = card;
 
     const cardTemplate = document.querySelector('#card-template').content;
     const placeElement = cardTemplate.querySelector('.card').cloneNode(true);
@@ -34,35 +34,33 @@ function createCard(card, userId) {
             .catch(err => console.error("Ошибка при изменении лайка:", err));
     });
 
-    if (owner._id !== userId) {
-        deleteButton.remove();
-    } else {
-        deleteButton.addEventListener('click', () => {
-            openModal(deleteCardPopup);
-            const newConfirmHandler = (evt) => {
-                evt.preventDefault();
+    // Убираем проверку владельца, чтобы любой пользователь мог удалить карточку
+    deleteButton.addEventListener('click', () => {
+        openModal(deleteCardPopup);
 
-                const originalText = confirmButton.textContent;
-                confirmButton.textContent = "Удаление...";
-                confirmButton.disabled = true;
+        const newConfirmHandler = (evt) => {
+            evt.preventDefault();
 
-                deleteCard(_id)
-                    .then(() => {
-                        deleteButton.closest('.card').remove();
-                        closeModal(deleteCardPopup);
-                    })
-                    .catch(err => console.error("Ошибка при удалении карточки:", err))
-                    .finally(() => {
-                        confirmButton.textContent = originalText;
-                        confirmButton.disabled = false;
-                    });
-            };
+            const originalText = confirmButton.textContent;
+            confirmButton.textContent = "Удаление...";  // Изменение текста кнопки на "Удаление..."
+            confirmButton.disabled = true;
 
-            confirmButton.removeEventListener('click', confirmButton._handler);
-            confirmButton.addEventListener('click', newConfirmHandler, {once: true});
-            confirmButton._handler = newConfirmHandler;
-        });
-    }
+            deleteCard(_id)
+                .then(() => {
+                    placeElement.remove();  // Удаляем карточку из DOM
+                    closeModal(deleteCardPopup);  // Закрываем попап
+                })
+                .catch(err => console.error("Ошибка при удалении карточки:", err))
+                .finally(() => {
+                    confirmButton.textContent = originalText;  // Восстанавливаем текст кнопки
+                    confirmButton.disabled = false;
+                });
+        };
+
+        confirmButton.removeEventListener('click', confirmButton._handler);  // Удаляем старую обработку
+        confirmButton.addEventListener('click', newConfirmHandler, {once: true});  // Добавляем новую обработку
+        confirmButton._handler = newConfirmHandler;  // Сохраняем обработчик
+    });
 
     // Открытие попапа с изображением
     cardImage.addEventListener('click', () => {
