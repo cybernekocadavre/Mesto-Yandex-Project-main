@@ -1,6 +1,6 @@
 # Проектная работа Mesto
 
-[Посмотреть проект](https://cuteulcer.github.io/Mesto-Yandex-Project/)
+[Посмотреть проект](https://cybernekocadavre.github.io/Mesto-Yandex-Project-main/)
 ## Краткое описание
 Одностраничный, адаптивный сайт, который создан с использованием HTML, CSS, Webpack и JavaScript.   
 Реализован по правилам flexbox, grid, используется CSS анимация, медиазапросы, подключены шрифты. Форма редактирования профиля на JavaScript. Файловая структура организована по Nested БЭМ.   
