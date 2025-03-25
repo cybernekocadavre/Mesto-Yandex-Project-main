@@ -38,7 +38,7 @@ const validationSettings = {
 const apiConfig = {
     link: 'https://mesto.nomoreparties.co/v1/apf-cohort-202/',
     headers: {
-        authorization: '95fd3299-b13f-4970-ad53-3dc8e7da86cf',
+        authorization: '99f5c381-f5fd-459e-84cd-e6e54a047885',
         'Content-Type': 'application/json'
     }
 }
